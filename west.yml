@@ -12,3 +12,8 @@ manifest:
           - hal_stm32
           - hal_nordic
         path-prefix: deps
+
+    - name: hal_espressif
+      url: https://github.com/zephyrproject-rtos/hal_espressif
+      revision: f3453bdeced28642424692aae32cce4eec3f2d7f
+      path: deps/modules/hal/espressif
