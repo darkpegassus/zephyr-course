@@ -1,0 +1,6 @@
+board:
+  name: custom_esp32_scratch
+  full_name: Custom ESP32 Scratch Board
+  vendor: custom
+  socs:
+    - name: esp32

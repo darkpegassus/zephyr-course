@@ -1,0 +1,21 @@
+identifier: custom_esp32_scratch/esp32/procpu
+name: Custom ESP32 Scratch
+type: mcu
+arch: xtensa
+toolchain:
+  - zephyr
+supported:
+  - adc
+  - dac
+  - gpio
+  - i2c
+  - i2s
+  - watchdog
+  - uart
+  - nvs
+  - pwm
+  - spi
+  - counter
+  - entropy
+  - input
+vendor: custom
