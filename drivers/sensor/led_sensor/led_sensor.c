@@ -26,7 +26,20 @@ static int led_sensor_init(const struct device *dev)
         return -ENODEV;
     }
 
+    led_sensor_data.value.val1 = 0;
+    led_sensor_data.value.val2 = 0;
+
     return gpio_pin_configure_dt(&led, GPIO_OUTPUT_INACTIVE);
+}
+
+/* Custom extension API */
+int led_sensor_set_value(const struct device *dev, int value)
+{
+    ARG_UNUSED(dev);
+
+    led_sensor_data.value.val1 = value;
+
+    return 0;
 }
 
 static int led_sensor_sample_fetch(const struct device *dev,
@@ -44,7 +57,8 @@ static int led_sensor_channel_get(const struct device *dev,
 {
     ARG_UNUSED(dev);
     ARG_UNUSED(chan);
-    ARG_UNUSED(val);
+
+    *val = led_sensor_data.value;
 
     return gpio_pin_set_dt(&led, 0);
 }
@@ -61,4 +75,4 @@ DEVICE_DEFINE(led_sensor, "led_sensor",
               CONFIG_KERNEL_INIT_PRIORITY_DEFAULT,
               &led_sensor_api);
 
-const struct device *led_sensor_dev = DEVICE_GET(led_sensor);
+DEVICE_DECLARE(led_sensor);
