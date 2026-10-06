@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/sensor.h>
@@ -59,10 +60,32 @@ static int cmd_sensor_info(const struct shell *sh,
     return 0;
 }
 
+static int cmd_sensor_set(const struct shell *sh,
+                          size_t argc, char **argv)
+{
+    int value = atoi(argv[1]);
+
+    if (value < 0 || value > 1) {
+        shell_error(sh, "Value must be 0 or 1");
+        return -EINVAL;
+    }
+
+    int ret = led_sensor_set_value(sensor, value);
+
+    if (ret != 0) {
+        shell_error(sh, "Set failed: %d", ret);
+        return ret;
+    }
+
+    shell_print(sh, "Sensor value set to %d", value);
+    return 0;
+}
+
 SHELL_STATIC_SUBCMD_SET_CREATE(sensor_cmds,
     SHELL_CMD(fetch, NULL, "Fetch sensor sample", cmd_sensor_fetch),
     SHELL_CMD(read, NULL, "Read sensor value", cmd_sensor_read),
     SHELL_CMD(info, NULL, "Show sensor information", cmd_sensor_info),
+    SHELL_CMD_ARG(set, NULL, "Set sensor value", cmd_sensor_set, 2, 0),
     SHELL_SUBCMD_SET_END
 );
 
